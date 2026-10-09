@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Séance 06 - Du prompt simple au prompt structuré</title>
+  <style>
+    :root {
+      --navy: #081426;
+      --navy-soft: #10243f;
+      --ink: #172033;
+      --muted: #5d687a;
+      --paper: #f6f8fc;
+      --white: #ffffff;
+      --line: #d8deea;
+      --gold: #c9a646;
+      --gold-soft: #fff4cf;
+      --blue: #2456d6;
+      --green: #117a4f;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.58;
+    }
+
+    header {
+      min-height: 82vh;
+      display: flex;
+      align-items: center;
+      color: var(--white);
+      background:
+        linear-gradient(120deg, rgba(8, 20, 38, 0.96), rgba(16, 36, 63, 0.92)),
+        radial-gradient(circle at 75% 25%, rgba(201, 166, 70, 0.25), transparent 35%);
+      border-bottom: 6px solid var(--gold);
+      padding: 46px 20px 36px;
+    }
+
+    .wrap {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .cover-label {
+      margin: 0 0 18px;
+      color: #f4d77d;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 980px;
+      margin: 0;
+      font-size: clamp(2.35rem, 6vw, 5.6rem);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 20px 0 0;
+      color: #dbe6fb;
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+    }
+
+    .motto {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 960px;
+      margin-top: 34px;
+    }
+
+    .motto span {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border: 1px solid rgba(244, 215, 125, 0.48);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.07);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    main { padding: 28px 0 54px; }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 6px 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    section {
+      margin: 0 0 18px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      color: var(--navy);
+      font-size: 1.45rem;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 18px 0 10px;
+      color: var(--navy-soft);
+      font-size: 1.08rem;
+      letter-spacing: 0;
+    }
+
+    p { margin: 0 0 12px; }
+
+    ul, ol {
+      margin: 0 0 12px 20px;
+      padding: 0;
+    }
+
+    li { margin: 0 0 7px; }
+
+    .toc {
+      columns: 2;
+      column-gap: 34px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .callout {
+      margin: 14px 0;
+      padding: 16px;
+      border-left: 5px solid var(--gold);
+      border-radius: 8px;
+      background: var(--gold-soft);
+      color: #352b08;
+      font-weight: 700;
+    }
+
+    .path {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .path div {
+      padding: 14px 10px;
+      border: 1px solid #c8d9ff;
+      border-radius: 8px;
+      background: #eef4ff;
+      color: #173a78;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 0.96rem;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #edf2fb;
+      color: var(--navy);
+    }
+
+    .copy-block {
+      margin: 14px 0;
+      overflow: hidden;
+      border: 1px solid #cdd6e5;
+      border-radius: 8px;
+      background: #0f172a;
+    }
+
+    .copy-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 12px;
+      background: #16243c;
+      color: #e5edf9;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    button {
+      min-height: 34px;
+      padding: 7px 12px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--gold);
+      color: #171302;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    pre {
+      margin: 0;
+      padding: 16px;
+      color: #f8fafc;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 0.94rem;
+      line-height: 1.48;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .checklist label {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcff;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      flex: 0 0 auto;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .success {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    @media (max-width: 840px) {
+      header { min-height: auto; }
+      .motto, .grid, .path { grid-template-columns: 1fr; }
+      .toc { columns: 1; }
+      section { padding: 18px; }
+    }
+
+    @media print {
+      body { background: var(--white); }
+      header {
+        min-height: auto;
+        color: var(--ink);
+        background: var(--white);
+      }
+      button { display: none; }
+      section { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <p class="cover-label">Challenge 100 jours - Formation IA pratique | Collection LN-IA</p>
+      <h1>Du prompt simple au prompt structuré</h1>
+      <p class="subtitle">Module 02 - Séance 06. Produire un premier livrable exploitable avec l'IA.</p>
+      <div class="motto" aria-label="Signature pédagogique LN-IA">
+        <span>Apprendre en produisant</span>
+        <span>Produire avec méthode</span>
+        <span>Partager avec valeur</span>
+        <span>Avancer avec conscience</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="meta">
+      <span class="tag">Version atelier</span>
+      <span class="tag">Public : candidats</span>
+      <span class="tag">Cadre : LN-IA</span>
+      <span class="tag">Livrable : 02-prompts/prompt-structure-v1.md</span>
+    </div>
+
+    <section>
+      <h2>Sommaire</h2>
+      <ol class="toc">
+        <li>Vision LN-IA</li>
+        <li>Position de la séance dans le parcours</li>
+        <li>Pourquoi structurer un prompt ?</li>
+        <li>Anatomie d'un prompt professionnel</li>
+        <li>Méthode LN-IA de construction</li>
+        <li>Les erreurs fréquentes</li>
+        <li>Atelier pratique n°1</li>
+        <li>Atelier pratique n°2</li>
+        <li>Atelier pratique n°3</li>
+        <li>Exercices ChatGPT</li>
+        <li>Exercices Codex et VS Code</li>
+        <li>Livrables attendus</li>
+        <li>Portfolio candidat</li>
+        <li>Évaluation</li>
+        <li>Préparation séance 07</li>
+        <li>Annexes</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>1. Vision LN-IA</h2>
+      <p>Le but n'est pas de devenir seulement utilisateur d'IA. Le but est de devenir producteur : quelqu'un qui formule une intention, demande un livrable, relit le résultat, corrige et classe une preuve.</p>
+      <table>
+        <thead>
+          <tr><th>Utilisateur</th><th>Producteur LN-IA</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pose des questions</td><td>Donne des missions</td></tr>
+          <tr><td>Consomme des réponses</td><td>Produit des livrables</td></tr>
+          <tr><td>Dépend de l'outil</td><td>Contrôle l'outil</td></tr>
+          <tr><td>Travaille au hasard</td><td>Travaille avec méthode</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">Une IA répond à une question. Une IA produit un livrable lorsqu'elle reçoit une mission structurée.</div>
+    </section>
+
+    <section>
+      <h2>2. Position de la séance dans le parcours</h2>
+      <p>La séance 06 fait le lien entre les premiers essais et la construction d'un assistant personnel plus stable.</p>
+      <div class="path">
+        <div>Séance 04<br>Dialogue IA</div>
+        <div>Séance 05<br>Premiers prompts</div>
+        <div>Séance 06<br>Prompt structuré</div>
+        <div>Séance 07<br>Prompt maître personnel</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Pourquoi apprendre à structurer un prompt ?</h2>
+      <p>Un prompt structuré améliore la première réponse, réduit les malentendus et rend le résultat plus facile à corriger. Il transforme une demande vague en consigne de production.</p>
+      <ul>
+        <li>Il clarifie le rôle attendu de l'IA.</li>
+        <li>Il donne le contexte du travail.</li>
+        <li>Il précise le livrable à produire.</li>
+        <li>Il impose des contraintes utiles.</li>
+        <li>Il demande un format directement exploitable.</li>
+        <li>Il prépare la correction et le contrôle humain.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Anatomie d'un prompt professionnel</h2>
+      <table>
+        <thead>
+          <tr><th>Élément</th><th>Rôle</th><th>Exemple</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Rôle</td><td>Donne une posture à l'IA</td><td>Tu es un assistant pédagogique LN-IA.</td></tr>
+          <tr><td>Contexte</td><td>Situe le besoin</td><td>Je prépare un livrable pour le Challenge 100 jours.</td></tr>
+          <tr><td>Mission</td><td>Définit le résultat attendu</td><td>Rédige une fiche projet claire.</td></tr>
+          <tr><td>Contraintes</td><td>Fixe les limites</td><td>Ton simple, pas de promesse excessive, données vérifiables.</td></tr>
+          <tr><td>Format</td><td>Organise la réponse</td><td>Tableau, checklist, plan, message prêt à envoyer.</td></tr>
+          <tr><td>Amélioration</td><td>Prépare l'itération</td><td>Propose 3 corrections utiles.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>5. Méthode LN-IA de construction d'un prompt</h2>
+      <div class="copy-block">
+        <div class="copy-head">
+          <span>Modèle principal à copier</span>
+          <button type="button" data-copy="modele-prompt">Copier</button>
+        </div>
+        <pre id="modele-prompt">Tu es [rôle].
+
+Contexte :
+[situation, public, objectif général]
+
+Mission :
+[ce que l'IA doit produire]
+
+Contraintes :
+- [contrainte 1]
+- [contrainte 2]
+- [contrainte 3]
+
+Format attendu :
+[liste, tableau, plan, message, document, checklist]
+
+Après la réponse :
+Propose 3 améliorations possibles.</pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>6. Les 7 erreurs fréquentes du débutant</h2>
+      <ol>
+        <li>Prompt trop court : l'IA devine au lieu de produire.</li>
+        <li>Objectif flou : le résultat part dans plusieurs directions.</li>
+        <li>Contexte absent : la réponse manque d'adaptation.</li>
+        <li>Contraintes oubliées : le ton, la longueur ou les limites ne sont pas respectés.</li>
+        <li>Format non demandé : la réponse devient difficile à utiliser.</li>
+        <li>Réponse non relue : les erreurs restent invisibles.</li>
+        <li>Livrable non archivé : le travail ne devient pas une preuve.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>7. Atelier pratique n°1 - Transformer une question faible</h2>
+      <p>Question de départ :</p>
+      <div class="callout">Comment utiliser l'IA ?</div>
+      <table>
+        <thead>
+          <tr><th>Niveau</th><th>Formulation</th><th>Résultat attendu</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Comment utiliser l'IA ?</td><td>Réponse générale</td></tr>
+          <tr><td>2</td><td>Comment utiliser l'IA pour préparer un message WhatsApp ?</td><td>Réponse contextualisée</td></tr>
+          <tr><td>3</td><td>Tu es un assistant pédagogique. Rédige un message WhatsApp clair.</td><td>Prompt structuré</td></tr>
+          <tr><td>4</td><td>Ajoute contexte, contraintes, format et amélioration.</td><td>Prompt orienté livrable</td></tr>
+        </tbody>
+      </table>
+      <div class="copy-block">
+        <div class="copy-head">
+          <span>Exemple de transformation complète</span>
+          <button type="button" data-copy="exemple-transformation">Copier</button>
+        </div>
+        <pre id="exemple-transformation">Tu es un assistant pédagogique LN-IA.
+
+Contexte :
+Je dois envoyer un message WhatsApp à des candidats du Challenge 100 jours pour leur rappeler de faire le quiz du Module 01.
+
+Mission :
+Rédige un message court, clair et professionnel.
+
+Contraintes :
+- ton encourageant ;
+- pas de pression excessive ;
+- rappeler que le quiz comporte 20 questions ;
+- inviter à consulter l'email reçu.
+
+Format attendu :
+Un message WhatsApp prêt à envoyer.
+
+Après la réponse :
+Propose une version plus courte et une version plus chaleureuse.</pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>8. Atelier pratique n°2 - Construire son premier prompt LN-IA</h2>
+      <div class="grid">
+        <div>
+          <h3>Fiche candidat à compléter</h3>
+          <div class="checklist">
+            <label><input type="checkbox"> Mon objectif est clair.</label>
+            <label><input type="checkbox"> Mon public est identifié.</label>
+            <label><input type="checkbox"> Mon livrable est choisi.</label>
+            <label><input type="checkbox"> Mes contraintes sont visibles.</label>
+            <label><input type="checkbox"> Mon format attendu est précis.</label>
+          </div>
+        </div>
+        <div>
+          <h3>Livrables possibles</h3>
+          <ul>
+            <li>Message WhatsApp</li>
+            <li>Fiche projet</li>
+            <li>Mini guide</li>
+            <li>Checklist</li>
+            <li>Page web</li>
+            <li>Publication Facebook</li>
+            <li>Portfolio personnel</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>9. Atelier pratique n°3 - Tester et corriger</h2>
+      <p>Le premier résultat de l'IA n'est pas final. Il doit être testé, relu et corrigé.</p>
+      <div class="copy-block">
+        <div class="copy-head">
+          <span>Prompt de correction à copier</span>
+          <button type="button" data-copy="prompt-correction">Copier</button>
+        </div>
+        <pre id="prompt-correction">Relis ta réponse précédente.
+
+Améliore-la selon ces critères :
+- clarté ;
+- utilité ;
+- précision ;
+- respect du format demandé ;
+- adaptation au public ;
+- absence d'information inventée.
+
+Signale aussi les points que je dois vérifier moi-même.</pre>
+      </div>
+      <h3>Points à observer</h3>
+      <ul>
+        <li>erreurs ;</li>
+        <li>oublis ;</li>
+        <li>hallucinations ;</li>
+        <li>améliorations possibles ;</li>
+        <li>points à vérifier par l'humain.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>10. Exercices ChatGPT</h2>
+      <table>
+        <thead>
+          <tr><th>Exercice</th><th>Production attendue</th><th>Objectif</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A</td><td>Produire un message</td><td>Obtenir un texte prêt à relire</td></tr>
+          <tr><td>B</td><td>Produire une fiche projet</td><td>Structurer une idée</td></tr>
+          <tr><td>C</td><td>Produire une checklist</td><td>Transformer un besoin en étapes</td></tr>
+          <tr><td>D</td><td>Demander une amélioration</td><td>Entrer dans l'itération</td></tr>
+        </tbody>
+      </table>
+      <h3>Tableau d'observation</h3>
+      <table>
+        <thead><tr><th>Critère</th><th>Observation</th></tr></thead>
+        <tbody>
+          <tr><td>Clarté</td><td></td></tr>
+          <tr><td>Structure</td><td></td></tr>
+          <tr><td>Pertinence</td><td></td></tr>
+          <tr><td>Hallucination</td><td></td></tr>
+          <tr><td>Utilité</td><td></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>11. Exercices Codex et VS Code</h2>
+      <p>Objectif : comprendre la complémentarité entre ChatGPT, Codex et Copilot.</p>
+      <table>
+        <thead>
+          <tr><th>Outil</th><th>Force principale</th><th>Usage dans l'atelier</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ChatGPT</td><td>Dialogue</td><td>Clarifier, reformuler, produire du texte</td></tr>
+          <tr><td>Codex</td><td>Production dans les fichiers</td><td>Créer, organiser, transformer des supports</td></tr>
+          <tr><td>Copilot</td><td>Assistance code</td><td>Compléter du code dans l'éditeur</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>12. Livrable officiel de la séance</h2>
+      <p>Fichier à créer ou compléter dans le dossier candidat :</p>
+      <div class="copy-block">
+        <div class="copy-head">
+          <span>Structure du livrable officiel</span>
+          <button type="button" data-copy="livrable">Copier</button>
+        </div>
+        <pre id="livrable">02-prompts/prompt-structure-v1.md
+
+# Prompt structuré V1
+
+## Besoin initial
+...
+
+## Prompt
+...
+
+## Réponse IA
+...
+
+## Correction demandée
+...
+
+## Validation humaine
+...
+
+## Points à vérifier
+...</pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>13. Portfolio candidat</h2>
+      <p>Le candidat archive les éléments qui prouvent son travail et sa progression.</p>
+      <div class="checklist">
+        <label><input type="checkbox"> Prompt initial conservé.</label>
+        <label><input type="checkbox"> Réponse IA conservée.</label>
+        <label><input type="checkbox"> Correction demandée conservée.</label>
+        <label><input type="checkbox"> Validation humaine notée.</label>
+        <label><input type="checkbox"> Fichier classé dans le bon dossier.</label>
+      </div>
+      <p class="note">Cette logique prépare GitHub, le portfolio LN-IA et la certification interne du Challenge.</p>
+    </section>
+
+    <section>
+      <h2>14. Évaluation</h2>
+      <p>Barème indicatif sur 20 points.</p>
+      <table>
+        <thead><tr><th>Critère</th><th>Points</th><th>Attendu</th></tr></thead>
+        <tbody>
+          <tr><td>Prompt complet</td><td>5</td><td>Rôle, contexte, mission, contraintes, format et amélioration.</td></tr>
+          <tr><td>Clarté</td><td>5</td><td>Demande lisible et ciblée.</td></tr>
+          <tr><td>Format</td><td>5</td><td>Réponse exploitable dans la forme demandée.</td></tr>
+          <tr><td>Contrôle humain</td><td>5</td><td>Relecture, correction, points à vérifier.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>15. Préparation séance 07</h2>
+      <h3>Prompt Maître Personnel LN-IA</h3>
+      <div class="callout">Si je devais travailler chaque jour avec l'IA, quel prompt deviendrait mon assistant personnel ?</div>
+      <p>La séance 06 construit le prompt structuré. La séance 07 prépare un prompt plus stable, adapté au profil et aux objectifs du candidat.</p>
+    </section>
+
+    <section>
+      <h2>16. Annexes prêtes à utiliser</h2>
+      <div class="grid">
+        <div>
+          <h3>Annexes candidat</h3>
+          <ul>
+            <li>Modèle Prompt Structuré V1</li>
+            <li>Prompt de correction</li>
+            <li>Checklist candidat</li>
+            <li>Journal de progression</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Annexes animateur</h3>
+          <ul>
+            <li>Checklist animateur</li>
+            <li>Grille d'observation atelier</li>
+            <li>Barème séance 06</li>
+            <li>Points de vigilance pédagogique</li>
+          </ul>
+        </div>
+      </div>
+      <div class="copy-block">
+        <div class="copy-head">
+          <span>Synthèse finale à copier</span>
+          <button type="button" data-copy="synthese">Copier</button>
+        </div>
+        <pre id="synthese">Une bonne question obtient une réponse.
+Un bon prompt produit un résultat.
+Un prompt structuré produit un livrable.
+Un livrable validé construit un portfolio.</pre>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.querySelectorAll("[data-copy]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const target = document.getElementById(button.dataset.copy);
+        if (!target) return;
+        try {
+          await navigator.clipboard.writeText(target.innerText);
+          const label = button.textContent;
+          button.textContent = "Copié";
+          button.classList.add("success");
+          setTimeout(() => {
+            button.textContent = label;
+            button.classList.remove("success");
+          }, 1400);
+        } catch (error) {
+          const range = document.createRange();
+          range.selectNodeContents(target);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+          button.textContent = "Sélectionné";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
