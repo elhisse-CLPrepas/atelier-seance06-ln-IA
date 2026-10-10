@@ -1,46 +1,50 @@
-# Rapport de contr?le ? S?ance 06
+# Rapport de contrôle — Séance 06
 
-Date : 9 octobre 2026. Dossier : atelier-seance-06-ln-ia.
+Actualisé le 10 octobre 2026.
 
-## R?sultat
-Le site compile et ses ressources sont accessibles en HTTP local. Le livrable p?dagogique est cr?? dans `02-prompts/prompt-structure-v1.md`. La validation humaine et les essais interactifs restent ? r?aliser. Aucune publication GitHub Pages effectu?e.
+## Résultat
+Le dépôt était propre au début du contrôle : commit 548d082, sans modification locale. La syntaxe et la compilation réussissent. Le dépôt GitHub existe, mais la publication Pages a échoué. La validation pédagogique humaine et la recette navigateur restent à réaliser.
 
-## P?rim?tre lu et contr?l?
-README.md, support candidats Markdown, r?sum? p?dagogique, mod?le candidat, sources JavaScript, configuration Vite et workflow GitHub Pages. Les huit supports ont ?t? inventori?s et leur int?grit? apr?s compilation v?rifi?e. Le contenu int?gral des PDF et DOCX n?a pas ?t? analys? ; aucune validation ?ditoriale de ces documents n?est revendiqu?e.
+## Périmètre
+README, guide d’animation, résumé candidats, livrable dans 02-prompts, sources JavaScript, configuration Vite et workflow. Aucun AGENTS.md trouvé dans le projet. Les PDF et DOCX historiques n’ont pas été relus intégralement pendant cet audit.
 
-## Preuves techniques
-| Contr?le | R?sultat |
+## Preuves
+| Contrôle | Résultat |
 |---|---|
-| Node.js | 24.12.0, compatible avec le pr?requis 20+ |
-| D?pendances | Installation r?ussie, 14 packages ajout?s ; package-lock.json g?n?r? |
-| Syntaxe | npm.cmd run check et node --check src/data.js r?ussis |
-| Aper?u autonome | Script analys? par new Function sans erreur de syntaxe |
-| Inventaire p?dagogique | 20 diapositives, 4 cas, 10 flashcards, 6 composantes |
-| Supports | 8 fichiers pr?sents |
-| Production | npm.cmd run build r?ussi, Vite 6.4.4, dist/index.html et ressources g?n?r?s |
-| Configuration | base relative ./ compatible avec un sous-r?pertoire |
-| Serveur compil? | npm.cmd run preview, accueil HTTP 200 sur http://127.0.0.1:4173/ |
-| Ressources servies | 8 supports et 3 images accessibles ; octets identiques aux originaux |
-| Git | Aucun d?p?t Git local d?tect? |
+| État Git initial | Aucun fichier modifié ou non suivi ; HEAD et référence locale origin/main identiques |
+| Intégrité | git fsck --full sans erreur |
+| Syntaxe et compilation | npm run check et npm run build réussis lors du contrôle précédent du 10 octobre |
+| Recherche ciblée de secrets | Aucun motif recherché détecté ; contrôle non exhaustif |
+| Dépendances | npm audit --json : zéro vulnérabilité signalée le 10 octobre |
+| GitHub Actions | Exécution 37990243484 en échec après compilation réussie |
+| GitHub Pages | API HTTP 404 ; configure-pages indique un site absent ou non configuré pour GitHub Actions |
+| Navigateur | Deux tentatives interrompues avant ouverture du site par une panne du processus de contrôle |
 
-Le premier npm install a ?chou? sur une restriction r?seau EACCES. L?installation relanc?e avec autorisation a r?ussi. npm.cmd ?vite le blocage du lanceur npm.ps1 sans modifier la politique PowerShell. Aucun audit de vuln?rabilit?s effectu?.
+Exécution : https://github.com/elhisse-CLPrepas/atelier-seance06-ln-IA/actions/runs/37990243484
 
-## Corrections et productions
-- `src/main.js` et `APERCU-SANS-INSTALLATION.html` : m?thode de secours de copie d?sormais tent?e si Clipboard API est absente ou refuse l?acc?s ; message explicite si la m?thode de secours ?choue. V?rification de syntaxe effectu?e ; comportement ? tester dans un navigateur.
-- `package-lock.json` : versions install?es conserv?es.
-- `dist/` : site compil? avec les supports et images originaux.
-- `02-prompts/prompt-structure-v1.md` : besoin r?el, six rubriques, premi?re r?ponse IA, correction, version corrig?e, points de contr?le et preuve. Test r?alis? dans cette session Codex, sans appel ? une API externe et sans second mod?le ind?pendant.
+## Corrections
+- Accents et symbole de confirmation restaurés dans les messages de copie des deux versions du site.
+- Workflow : npm ci remplace npm install pour respecter le verrou ; contrôle de syntaxe de main.js et data.js avant compilation.
+- Rapport actualisé : retrait des constats périmés sur l’absence de dépôt.
+- Livrable de séance rétabli en français lisible et suivi actuel ajouté.
 
-## V?rifications humaines restantes
-- Navigation entre les neuf pages, affichage mobile, pr?sentation au clavier et plein ?cran.
-- Copie, export Markdown, rechargement du brouillon, r?initialisation et flashcards.
-- Exactitude p?dagogique des supports historiques et pertinence du cas pratique choisi.
-- Validation du livrable et ajout de sa preuve au portfolio personnel.
+## Travail restant, dans l’ordre
+1. Recette locale : neuf pages, mobile, présentation au clavier et plein écran, démonstrations et flashcards.
+2. Tester copie et refus du presse-papiers, export Markdown, persistance du brouillon, réinitialisation, checklist, préparation S07 et huit téléchargements.
+3. Relire les supports historiques, valider humainement le livrable et conserver sa preuve dans le portfolio.
+4. Activer GitHub Pages avec la source GitHub Actions dans les paramètres du dépôt, puis exécuter le workflow corrigé. Cette publication n’a pas été activée pendant cet audit.
+5. Vérifier le site public et ses téléchargements après déploiement réussi.
 
-## Publication GitHub Pages
-Le workflow est pr?sent et pr?voit une publication depuis main. Aucun d?p?t ni compte cible n?a ?t? fourni et aucun d?p?t local n?existe. Le contenu statique est pr?t dans dist ; la publication et le contr?le du site public restent ? faire apr?s choix de la destination.
+## Limites
+La compilation ne valide pas les interactions, l’affichage mobile ou le contenu pédagogique. Les captures existantes ne prouvent pas la recette du code corrigé. Aucun test navigateur réussi ni déploiement public réussi n’est revendiqué.
 
-## Trois am?liorations propos?es
-1. Conserver ce rapport avec le fichier de s?ance pour rendre les r?sultats tra?ables.
-2. Effectuer une recette navigateur avant diffusion aux candidats.
-3. Utiliser le verrou de d?pendances avec npm ci dans un futur ajustement du workflow pour reproduire les installations.
+## Verification finale apres corrections
+- npm run check, node --check src/data.js et npm run build : succes.
+- Script autonome : analyse vm.Script reussie.
+- Inventaire : 20 diapositives, 4 cas, 10 flashcards, 6 composantes, 8 supports.
+- Supports et images de dist identiques octet par octet aux fichiers de public.
+- git diff --check : aucune erreur.
+- Cinq fichiers modifies localement ; aucun nouveau commit ni push pendant cet audit.
+
+## Suivi publication du 10 octobre 2026
+GitHub Pages est maintenant actif. Le mode initial legacy (main, racine) a ete remplace par workflow pour publier dist via GitHub Actions. Le constat Pages absent ci-dessus decrit le controle anterieur. Les cinq fichiers corriges sont prepares pour un nouveau commit et un push ; le resultat du deploiement sera controle apres publication. La recette navigateur et la validation humaine restent a effectuer.
