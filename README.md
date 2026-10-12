@@ -4,6 +4,13 @@
 Module 02 · Semaine 03 · Séance 06 · Atelier pratique et production  
 Pilotage : Prof. Abderrahman EL HISSE
 
+
+## Accéder à l’atelier en ligne
+
+[**Ouvrir l’atelier Séance 06 sur GitHub Pages**](https://elhisse-clprepas.github.io/atelier-seance06-ln-IA/)
+
+Accès direct dans votre navigateur, sans installation : présentation, affiches, exercices pratiques et supports téléchargeables.
+
 ## Objectif
 
 Transformer un besoin réel en un prompt structuré, obtenir et contrôler une réponse IA, demander une correction, puis conserver le fichier `02-prompts/prompt-structure-v1.md`.
