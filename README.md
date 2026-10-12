@@ -90,3 +90,13 @@ Les supports d'origine sont conservés dans `public/supports/`, sans réécritur
 ## Licence pédagogique
 
 Matériel préparé pour l'atelier LN-IA. Supports originaux inclus à des fins de continuité de travail dans le Challenge 100 jours.
+
+## Affiches et passage à la pratique
+
+Quatre affiches accompagnent les 20 diapositives, dans le site et l’aperçu sans installation :
+- Diapositive 1 : Module 02, semaine 03 — situer l’objectif de production.
+- Diapositive 3 : parcours des séances 05 à 08 — préciser que le module couvre les semaines 03 et 04 ; l’ancien calendrier de l’affiche est contextualisé.
+- Diapositive 14 : atelier du prompt structuré — choisir un besoin réel et ouvrir « Mon atelier » pour produire, tester, corriger et exporter.
+- Diapositive 20 : séance 07 — préparer profil, objectifs et livrables à partir de la pratique de S06. COMMENCER-ICI.md est une référence au pack S07.
+
+Les affiches sont conservées entières, avec texte alternatif, légende et lien pour les ouvrir en grand. En mode projection, la diapositive peut défiler. Sur mobile, l’affiche suit la consigne. Les copies publiées sont dans public/affiches ; les originaux du dossier Affiches restent inchangés.
