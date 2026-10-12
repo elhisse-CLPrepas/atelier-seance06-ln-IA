@@ -16,3 +16,11 @@
 .slide-copy .button{margin-top:12px}
 .slide.has-poster:fullscreen{overflow-y:auto;height:100vh}
 @media(max-width:760px){.slide.has-poster .slide-main{grid-template-columns:1fr;gap:20px}.slide-poster img{max-height:none}.slide.has-poster{padding:22px 16px}}
+
+/* Projection stable pendant les changements de diapositives */
+html:fullscreen{overflow-y:auto;background:#06152e}
+html:fullscreen .site-head,html:fullscreen .sidebar,html:fullscreen .site-footer{display:none}
+html:fullscreen .layout{display:block}
+html:fullscreen .main{padding:20px;max-width:1600px;margin:auto}
+html:fullscreen .page-heading{display:none}
+html:fullscreen .slide-navigation{position:sticky;bottom:0;background:#f4f6fa;padding:12px;border-radius:10px;z-index:10}

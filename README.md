@@ -11,6 +11,10 @@ Pilotage : Prof. Abderrahman EL HISSE
 
 Accès direct dans votre navigateur, sans installation : présentation, affiches, exercices pratiques et supports téléchargeables.
 
+## Préparer la présentation
+
+[**Fiche de conduite : préparation, déroulé et solution de secours**](docs/CONDUITE-PRESENTATION-SEANCE-06.md)
+
 ## Objectif
 
 Transformer un besoin réel en un prompt structuré, obtenir et contrôler une réponse IA, demander une correction, puis conserver le fichier `02-prompts/prompt-structure-v1.md`.
